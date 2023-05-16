@@ -1,0 +1,40 @@
+.flex {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #E0E6ED;;
+}
+
+.nav-custom {
+    height: 40px;
+}
+
+.block-custom {
+    background-color: #E0E6ED;
+}
+
+h4 {
+    background-color: beige;
+    padding: 10px;
+}
+
+.inputs-new-user {
+    background-color: white;
+}
+
+.custom-navbar {
+    background-color: white;
+}
+
+.center-block {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-weight: bold;
+    padding-bottom: 10px;
+}

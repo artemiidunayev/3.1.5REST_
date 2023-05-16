@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Users</title>
+</head>
+<body>
+<div class="container-fluid m-0 p-0 flex">
+    <div class="p-2 nav-custom" style="background-color: #232631">
+        <b style="color: white" th:utext="${admin.getEmail}"></b>
+        <ruby style="color: white">with roles:</ruby>
+        <th:block th:each="role : ${admin.getRoles()}">
+            <ruby style="color: white" th:text="${role.getValue}"></ruby>
+        </th:block>
+        <div class="float-right">
+            <a style="color: #808598" th:href="@{/logout}">Logout</a>
+        </div>
+    </div>
+    <div class="container-fluid block-custom">
+        <div class="row">
+            <div class="col-2 custom-navbar m-0 p-0">
+                <ul class="nav flex-column nav-pills">
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
+                        <a class="nav-link active" data-toggle="tab" href="#users">User</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a class="nav-link active" data-toggle="tab" href="#admin">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#user">User</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-10 tab-content clearfix">
+                <div class="tab-pane fade show active" sec:authorize="hasRole('ROLE_ADMIN')" id="admin">
+                    <h1>Admin panel</h1>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#users-table">Users table</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#new-user">New User</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" style="background-color: white" id="users-table">
+                            <h4>All users</h4>
+                            <div>
+                                <table class="table table-striped" id="users-table-show">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Age</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="myModal">
+                            <div class="modal" id="customModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="customModalLabel">Edit user</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body center-block"></div>
+                                        <div class="modal-footer"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="myFormDelete">
+                            <div class="modal" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabelDelete">Delete user</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body center-block">
+                                        </div>
+                                        <div class="modal-footer">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade inputs-new-user" id="new-user">
+                            <h4>Add new user</h4>
+                            <form class="col-4 center-block" th:method="POST" th:action="@{/ad}" th:object="${user}">
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" class="form-control" th:field="*{firstName}" id="firstName" placeholder="First name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" class="form-control" th:field="*{lastName}" id="lastName" placeholder="Last Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="age">Age</label>
+                                    <input type="text" class="form-control" th:field="*{age}" id="age" placeholder="Age">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" th:field="*{email}" id="email" placeholder="Email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" th:field="*{password}" id="password" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="rolesId">Role</label>
+                                    <select class="custom-select" id="rolesId" name="rolesId" multiple>
+                                        <option value="1">USER</option>
+                                        <option value="2">ADMIN</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success">Add new user</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" style="background-color: white" id="users">
+                    <h1>User information-page</h1>
+                    <h4>About user</h4>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row" th:utext="${user.getId()}"></th>
+                            <td th:utext="${user.getFirstName()}"></td>
+                            <td th:utext="${user.getLastName()}"></td>
+                            <td th:utext="${user.getAge()}"></td>
+                            <td th:utext="${user.getEmail()}"></td>
+                            <td>
+                                <th:block th:each="role : ${user.getRoles()}">
+                                    <ruby th:text="${role.getValue()}"></ruby>
+                                </th:block>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="webjars/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>
