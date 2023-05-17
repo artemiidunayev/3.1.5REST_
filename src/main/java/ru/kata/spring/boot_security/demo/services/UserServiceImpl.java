@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +55,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(Long id, User user) {
+        Collection<Role> roles = user.getRoles();
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User editUser = optionalUser.get();
@@ -62,8 +65,11 @@ public class UserServiceImpl implements UserService {
             editUser.setAge(user.getAge());
             editUser.setEmail(user.getEmail());
             editUser.setRoles(user.getRoles());
+
             if (!editUser.getPassword().equals(user.getPassword())) {
                 editUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            } if(user.getPassword().isEmpty()){
+                editUser.setPassword(editUser.getPassword());
             }
             userRepository.save(editUser);
         }

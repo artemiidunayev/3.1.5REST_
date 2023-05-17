@@ -32,7 +32,7 @@ async function getTableBody() {
             users.forEach(user => {
                 let rolesUser = "";
                 for (let role of user.roles) {
-                    rolesUser += role.value;
+                    rolesUser += role.value; //value
 
                     rolesUser += " ";
                 }
@@ -108,8 +108,8 @@ async function modalUpdateUser(id) {
                 '<div class="form-group">' +
                 '<label htmlFor="rolesIdEdit">Role</label>' +
                 '<select class="custom-select" id="rolesIdEdit" name="rolesId" multiple>' +
-                '<option value="1">USER</option>' +
-                '<option value="2">ADMIN</option>' +
+                '<option value="2">USER</option>' +
+                '<option value="1">ADMIN</option>' +
                 '</select>' +
                 '</div>';
             modal.find('.modal-body').append(modalBody);
@@ -139,6 +139,7 @@ async function modalUpdateUser(id) {
             email: modal.find('#emailEdit').val(),
             password: modal.find('#passwordEdit').val(),
             roles: idRole
+            // roles: modal.find('#rolesIdEdit').val(),
         }
 
         fetchUser.updateUser(id, data);
